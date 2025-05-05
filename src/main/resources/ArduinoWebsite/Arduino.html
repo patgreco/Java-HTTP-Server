@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="styles.css" rel="stylesheet"/>
+        <title>Arduino Robot Project</title>
+    </head>
+
+    <body>
+        <div>
+            <h1 style="text-align: center;">Arduino Robot Project</h1>
+            <h4 style="text-align: center;">Creator: Patrick Greco</h4>
+        </div>
+
+        <div style="margin-top: 50px; margin-bottom: 50px;">
+            <div class="intro">
+                <h2 style="text-align: center;">Overview</h2>
+                <p style="text-align: center;">
+                    Completed as a CE (comprehensive examination) project           
+                    for Dawson college, I was given a robot car as shown in           
+                    the photo below. My task was attach an 
+                    <a target="_blank" href="https://en.wikipedia.org/wiki/Arduino">Arduino</a> 
+                    to the car as well as various sensors, as the robot was 
+                    expected to complete a course containing three sections (see below).
+                </p>
+            </div>
+            <div>
+                <img class="intro-img" src="car-base-pic.jpeg" alt="car model" width="300px" height="300px"/>
+            </div>
+        </div>
+
+        <div class="main-container">
+            <div class="main-item">
+                <div>
+                    <h3 style="text-align: center;">UltraSonic Sensor</h3>
+                    <p style="text-align: center;">
+                        The robot was tasked to maintain a certain distance (50cm) 
+                        to a wall using an ultrasonic sensor (which measures distance).
+                        It must navigate along the wall until it reached the next obstacle.
+                    </p>
+                </div>
+                <div>
+                    <img class="main-img" src="ultrasonic-sensor.jpeg" alt="ultrasonic sensor"/>
+                </div>
+            </div>
+            <div class="main-item">
+                <div >
+                    <h3 style="text-align: center;">Remote Control</h3>
+                    <p style="text-align: center;">
+                        Next, the robot must switch to remote control mode, 
+                        where the user will navigate the robot through the maze. 
+                        The robot must not touch the walls of the maze. 
+                    </p>
+                </div> 
+                <div>
+                    <img class="main-img" src="ir-remote.png" alt="remote control"/>
+                </div>   
+            </div>
+            <div class="main-item">
+                <div>
+                    <h3 style="text-align: center;">Color Sensor</h3>
+                    <p style="text-align: center;">
+                        Lastly, the robot will switch to color sensor mode in order to 
+                        navigate through a colored track. It must maintain itself on the blue line.
+                    </p>
+                </div>
+                <div>
+                    <img class="main-img" src="color-sensor.webp" alt="color sensor"/>
+                </div>
+            </div>
+        </div>
+        
+
+        <!--
+        <div id="end">
+            <p>
+                Here is the final result of the robot going through all three obstacles in the course.
+            </p>
+            <video src="./IMG_0581.mov" width="300" height="300" controls>
+                Final result.
+            </video>
+        </div> -->
+    </body>
+</html>

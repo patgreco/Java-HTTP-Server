@@ -1,9 +1,8 @@
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
+import java.nio.file.Files;
 
 public class SimpleHTTPServer {
     public static void main(String args[]) {
@@ -31,29 +30,36 @@ public class SimpleHTTPServer {
             this.toClientSocket = toClientSocket;
         }
         public void run() {
-            System.out.println("Worker thread handling HTTP request");
-
             try {
-                Date today = new Date();
-                String httpResponse = "HTTP/1.1 200 OK\r\n" +
-                        "Content-Type: text/plain\r\n" +
-                        "Cache-Control: no-store\r\n" +
-                        "Connection: close\r\n" +
-                        "Content-Length: " + today.toString().getBytes(StandardCharsets.UTF_8).length + "\r\n" +
-                        "\r\n" +
-                        today;
-                OutputStream out = toClientSocket.getOutputStream();
-                out.write(httpResponse.getBytes(StandardCharsets.UTF_8));
-                out.flush();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(toClientSocket.getInputStream()));
+                String requestLine = reader.readLine();  // e.g. "GET /index.html HTTP/1.1"
+                String[] parts = requestLine.split(" ");
+                String method = parts[0];
+                String path = parts[1];
 
-                System.out.println("Thread sleeping...");
-                try {
-                    Thread.sleep(10000);  // Sleep for 10 seconds to test concurrency handling
-                } catch (InterruptedException e) {
-                    System.err.println("Thread sleep exception!");
-                    e.printStackTrace();
+                File file = new File("../resources/ArduinoWebsite", path);
+                OutputStream out = toClientSocket.getOutputStream();
+
+                if (file.exists() && file.isFile()) {
+                    byte[] fileContent = Files.readAllBytes(file.toPath());
+                    String contentType = Files.probeContentType(file.toPath());  // e.g., text/html
+
+                    String responseHeaders = "HTTP/1.1 200 OK\r\n" +
+                            "Content-Type: " + contentType + "\r\n" +
+                            "Content-Length: " + fileContent.length + "\r\n" +
+                            "Connection: close\r\n\r\n";
+
+                    out.write(responseHeaders.getBytes(StandardCharsets.UTF_8));
+                    out.write(fileContent);  // Send body
+                } else {
+                    String errorMessage = "404 Not Found";
+                    String response = "HTTP/1.1 404 Not Found\r\n" +
+                            "Content-Type: text/plain\r\n" +
+                            "Content-Length: " + errorMessage.length() + "\r\n" +
+                            "Connection: close\r\n\r\n" +
+                            errorMessage;
+                    out.write(response.getBytes(StandardCharsets.UTF_8));
                 }
-                System.out.println("Thread done sleeping.");
 
                 toClientSocket.close();
             }
